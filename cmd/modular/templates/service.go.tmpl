@@ -1,0 +1,42 @@
+package services
+
+import (
+	"SparksSport/pkg/{{.ModuleLower}}/models"
+	"SparksSport/pkg/{{.ModuleLower}}/repositories"
+)
+
+type {{.ModuleName}}Service interface {
+	GetAll{{.ModuleName}}s() ([]models.{{.ModuleName}}, error)
+	Get{{.ModuleName}}ByID(id uint) (*models.{{.ModuleName}}, error)
+	Create{{.ModuleName}}({{.ModuleLower}} *models.{{.ModuleName}}) error
+	Update{{.ModuleName}}({{.ModuleLower}} *models.{{.ModuleName}}) error
+	Delete{{.ModuleName}}(id uint) error
+}
+
+type {{.ModuleLower}}Service struct {
+	repo repositories.{{.ModuleName}}Repository
+}
+
+func New{{.ModuleName}}Service(repo repositories.{{.ModuleName}}Repository) {{.ModuleName}}Service {
+	return &{{.ModuleLower}}Service{repo: repo}
+}
+
+func (a {{.ModuleLower}}Service) GetAll{{.ModuleName}}s() ([]models.{{.ModuleName}}, error) {
+	return a.repo.GetAll()
+}
+
+func (a {{.ModuleLower}}Service) Get{{.ModuleName}}ByID(id uint) (*models.{{.ModuleName}}, error) {
+	return a.repo.GetByID(id)
+}
+
+func (a {{.ModuleLower}}Service) Create{{.ModuleName}}({{.ModuleName}} *models.{{.ModuleName}}) error {
+	return a.repo.Create({{.ModuleName}})
+}
+
+func (a {{.ModuleLower}}Service) Update{{.ModuleName}}({{.ModuleName}} *models.{{.ModuleName}}) error {
+	return a.repo.Update({{.ModuleName}})
+}
+
+func (a {{.ModuleLower}}Service) Delete{{.ModuleName}}(id uint) error {
+	return a.repo.Delete(id)
+}

@@ -1,0 +1,19 @@
+package requests
+
+import (
+	"github.com/gorilla/mux"
+	"net/http"
+	"strconv"
+)
+
+func Validate{{.ModuleName}}Id(r *http.Request) (uint, error) {
+	params := mux.Vars(r)
+	{{.ModuleLower}}ID := params["id"]
+
+	id, err := strconv.ParseUint({{.ModuleLower}}ID, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+
+	return uint(id), nil
+}

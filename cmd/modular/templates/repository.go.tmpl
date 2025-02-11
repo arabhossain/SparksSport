@@ -1,0 +1,49 @@
+package repositories
+
+import (
+	"SparksSport/pkg/{{.ModuleLower}}/models"
+	"gorm.io/gorm"
+)
+
+type {{.ModuleName}}Repository interface {
+	GetAll() ([]models.{{.ModuleName}}, error)
+	GetByID(id uint) (*models.{{.ModuleName}}, error)
+	Create({{.ModuleLower}} *models.{{.ModuleName}}) error
+	Update({{.ModuleLower}} *models.{{.ModuleName}}) error
+	Delete(id uint) error
+}
+
+type {{.ModuleLower}}Repository struct {
+	db *gorm.DB
+}
+
+func New{{.ModuleName}}Repository(db *gorm.DB) {{.ModuleName}}Repository {
+	return &{{.ModuleLower}}Repository{db: db}
+}
+
+func (r *{{.ModuleLower}}Repository) GetByID(id uint) (*models.{{.ModuleName}}, error) {
+	var {{.ModuleLower}} models.{{.ModuleName}}
+	result := r.db.First(&{{.ModuleLower}}, id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &{{.ModuleLower}}, nil
+}
+
+func (r *{{.ModuleLower}}Repository) Create({{.ModuleLower}} *models.{{.ModuleName}}) error {
+	return r.db.Create({{.ModuleLower}}).Error
+}
+
+func (r *{{.ModuleLower}}Repository) Update({{.ModuleLower}} *models.{{.ModuleName}}) error {
+	return r.db.Save({{.ModuleLower}}).Error
+}
+
+func (r *{{.ModuleLower}}Repository) Delete(id uint) error {
+	return r.db.Delete(&models.{{.ModuleName}}{}, id).Error
+}
+
+func (r *{{.ModuleLower}}Repository) GetAll() ([]models.{{.ModuleName}}, error) {
+	var {{.ModuleLower}}s []models.{{.ModuleName}}
+	result := r.db.Find(&{{.ModuleLower}}s)
+	return {{.ModuleLower}}s, result.Error
+}

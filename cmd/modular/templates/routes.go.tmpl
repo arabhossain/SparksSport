@@ -1,0 +1,11 @@
+package routes
+
+import (
+	"SparksSport/pkg/{{.ModuleLower}}/http/handlers"
+	"github.com/gorilla/mux"
+)
+
+func Register{{.ModuleName}}Routes(router *mux.Router, {{.ModuleLower}}Handler *{{.ModuleLower}}_handlers.{{.ModuleName}}Handler) {
+	router.HandleFunc("/{{.ModuleLower}}s", {{.ModuleLower}}Handler.Get{{.ModuleName}}s).Methods("GET")
+	router.HandleFunc("/{{.ModuleLower}}s/{id}", {{.ModuleLower}}Handler.Get{{.ModuleName}}).Methods("GET")
+}

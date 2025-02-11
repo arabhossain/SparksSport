@@ -1,0 +1,28 @@
+package providers
+
+import (
+	"SparksSport/cmd/app/core/providers"
+	"SparksSport/pkg/{{.ModuleLower}}/http/handlers"
+	"SparksSport/pkg/{{.ModuleLower}}/http/routes"
+	"SparksSport/pkg/{{.ModuleLower}}/repositories"
+	"SparksSport/pkg/{{.ModuleLower}}/services"
+)
+
+type {{.ModuleName}}ServiceProvider struct{}
+
+func (a *{{.ModuleName}}ServiceProvider) Register(container *providers.ServiceContainer) {
+	// Register Repository
+	{{.ModuleLower}}Repo := repositories.New{{.ModuleName}}Repository(container.DB)
+	container.RegisterService("{{.ModuleName}}Repository", {{.ModuleLower}}Repo)
+
+	// Register Service
+	{{.ModuleLower}}Service := services.New{{.ModuleName}}Service({{.ModuleLower}}Repo)
+	container.RegisterService("{{.ModuleName}}Service", {{.ModuleLower}}Service)
+
+	// Register Handler
+	{{.ModuleLower}}Handler := {{.ModuleLower}}_handlers.New{{.ModuleName}}Handler({{.ModuleLower}}Service, container.Response)
+	container.RegisterService("{{.ModuleName}}Handler", {{.ModuleLower}}Handler)
+
+	// Register Routes
+	routes.Register{{.ModuleName}}Routes(container.Router, {{.ModuleLower}}Handler)
+}

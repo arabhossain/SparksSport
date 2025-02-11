@@ -1,0 +1,43 @@
+package {{.ModuleLower}}_handlers
+
+import (
+	"SparksSport/cmd/app/core/providers"
+	"SparksSport/pkg/{{.ModuleLower}}/http/requests"
+	"SparksSport/pkg/{{.ModuleLower}}/services"
+	"net/http"
+)
+
+type {{.ModuleName}}Handler struct {
+	{{.ModuleLower}}Service services.{{.ModuleName}}Service
+	response     providers.Response
+}
+
+func New{{.ModuleName}}Handler({{.ModuleLower}}Service services.{{.ModuleName}}Service, response providers.Response) *{{.ModuleName}}Handler {
+	return &{{.ModuleName}}Handler{ {{.ModuleLower}}Service: {{.ModuleLower}}Service, response: response}
+}
+
+func (h *{{.ModuleName}}Handler) Get{{.ModuleName}}s(w http.ResponseWriter, r *http.Request) {
+	{{.ModuleLower}}s, err := h.{{.ModuleLower}}Service.GetAll{{.ModuleName}}s()
+	if err != nil {
+		h.response.Error(w, r, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	h.response.Success(w, r, {{.ModuleLower}}s, "", http.StatusOK)
+}
+
+func (h *{{.ModuleName}}Handler) Get{{.ModuleName}}(w http.ResponseWriter, r *http.Request) {
+	id, err := requests.Validate{{.ModuleName}}Id(r)
+	if err != nil {
+		h.response.Error(w, r, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	{{.ModuleLower}}, err := h.{{.ModuleLower}}Service.Get{{.ModuleName}}ByID(id)
+	if err != nil {
+		h.response.Error(w, r, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	h.response.Success(w, r, {{.ModuleLower}}, "", http.StatusOK)
+}

@@ -1,0 +1,9 @@
+
+
+GET {{host}}/admins
+Accept: application/json
+
+####
+
+GET {{host}}/admins/2
+Accept: application/json
